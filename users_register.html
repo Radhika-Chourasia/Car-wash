@@ -1,0 +1,143 @@
+
+
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login / Sign Up Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--link rel="stylesheet" href="style1.css"-->
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="users.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+</head>
+<body>
+    <div class="bg">
+        <nav>
+          <a href="./index.html">Home</a>
+          <a href="./users.html">Login</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <!--form class="form form--hidden" id="createAccount"-->
+            <h1 class="form__title">Create Account</h1>
+            
+            <div class="form__input-group">
+                <input type="text" id="full_name" class="form__input" autofocus placeholder="Fullname">
+                
+            </div>
+            <div class="form__input-group">
+                <input type="text" id="email" class="form__input" autofocus placeholder="Email Address">
+               
+            </div>
+            <div class="form__input-group">
+                <input type="password" id="password" class="form__input" autofocus placeholder="Password">
+                
+            </div>
+            <!--div class="form__input-group">
+                <input type="password" class="form__input" autofocus placeholder="Confirm password">
+                <div class="form__input-error-message"></div>
+            </div-->
+            <button type="text" class="form__button" id="sub_btn" >Continue</button>
+            <p class="form__text">
+                <a class="form__link" href="./users.html" id="linkLogin">Already have an account? Sign in</a>
+            </p>
+        <!--/form-->
+    </div>
+    
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+  
+        const firebaseConfig = {
+    apiKey: "AIzaSyA0LNB8yRF8qRZ2lm-jD6itFts_CU4I3sg",
+    authDomain: "car-wash1-f656f.firebaseapp.com",
+    projectId: "car-wash1-f656f",
+    storageBucket: "car-wash1-f656f.appspot.com",
+    messagingSenderId: "947877209950",
+    appId: "1:947877209950:web:b4dbdda08e3ad0b43a91cf",
+    measurementId: "G-1BQQEFJ38Q"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+        import  {getDatabase, ref, set, child, get} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
+
+        const db= getDatabase();
+
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const full_name = document.getElementById('full_name');
+        const submit = document.getElementById('sub_btn');
+
+        function isEmpty(str){
+            return str === null || str.match(/^ *$/)!== null;
+            }
+
+
+        function Validation(){
+            let nameregex= /^[a-zA-Z]+$/;
+            let emailregex = /^[a-zA-Z0-9]+@(gmail|yahoo|outlook)\.com$/;
+
+            if (isEmpty(full_name.value) || isEmpty(email.value)|| isEmpty(password.value)  ){
+                alert("You cannot leave any field empty");
+                return false;
+            }         
+            
+            
+            if(!nameregex.test(full_name.value)){
+                alert("Name should only contain alphabets");
+                return false;
+            }
+
+            if(!emailregex.test(email.value)){
+                alert("Enter a valid Email");
+                return false;
+            }
+
+            return true;
+        }
+
+        function RegisterUser(){
+            if(!Validation()){
+                return;
+            };
+            const dbRef = ref(db);
+
+            get(child(dbRef,"UserList/"+full_name.value)).then((snapshot)=>{
+                if(snapshot.exists()){
+                    alert("Account already exists!");
+                }
+                else{
+                    set(ref(db,"UserList/"+full_name.value),
+                    {
+                        full_name:full_name.value, 
+                        email:email.value,
+                        password: encPass()
+                    })
+                    .then(()=>{
+                        alert("User added Successfully");
+                    })
+                    .catch((error)=>{
+                        alert("Error"+error);
+                    })
+                }
+            });
+        }
+
+
+        function encPass(){
+            var pass12=CryptoJS.AES.encrypt(password.value,password.value);
+            return pass12.toString();
+        }
+
+
+        submit.addEventListener('click',RegisterUser);
+    </script>
+
+ 
+</body>
