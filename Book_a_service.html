@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="Book_a_service.css">
+    
+    
+</head>
+<body>
+    <div class="bg1">
+            <nav>
+             <a href = "./users_home.html">Dashboard</a>
+            </nav>
+
+    </div>
+    <div class="search-content">
+        <div class ="search">
+            <div class="icon"></div>
+            <div class="input">
+                <input type="text" placeholder="Search place" id="mysearch" onkeyup="search_func()">
+            </div>
+        </div>
+        
+        <!--div class="my_table"-->
+            <table class="my_table" id="myTable">
+                <tr class="header">
+                    <th >Place Name</th>
+                    <th >Address</th>
+                    <th >Contact Number</th>
+                    <th >Price</th>
+                    <th >Book the service</th>
+                </tr>
+                
+                <tr>
+                    <td>Place 1</td>
+                    <td>New Chok, Nagpur</td>
+                    <td>1234567890</td>
+                    <td>₹1099</td>
+                    <td><button class="button" type="submit"> Buy</button></td>
+                </tr>
+                <tr>
+                    <td>Place 2</td>
+                    <td>Jail road, Ahemdabad</td>
+                    <td>1234567890</td>
+                    <td>₹1999</td>
+                    <td><button class="button" type="submit"> Buy</button></td>
+                </tr>
+                <tr>
+                    <td>Place 3</td>
+                    <td>Jamnik street, Pune</td>
+                    <td>1234567890</td>
+                    <td>₹1599</td>
+                    <td><button class="button" type="submit"> Buy</button></td>
+                </tr>
+                <tr>
+                    <td>Place 4</td>
+                    <td>Shri hari road, Nagpur</td>
+                    <td>1234567890</td>
+                    <td>₹1299</td>
+                    <td><button class="button" type="submit"> Buy</button></td>
+                </tr>
+        
+            </table>
+        <!--/div-->
+    </div>
+
+    
+    <script>
+        const icon =document.querySelector('.icon');
+        const search =document.querySelector('.search');
+
+        icon.onclick= function(){
+           search.classList.toggle('active')
+      }
+
+      const search_func = ()=>{
+        let filter = document.getElementById('mysearch').value.toLowerCase();
+        let myTable = document.getElementById('myTable');
+        let tr = myTable.getElementsByTagName('tr');
+        for(var i=0; i<tr.length; i++){
+            let td = tr[i].getElementsByTagName('td')[1];
+            if(td) {
+                let textvlaue = td. textContent || td.innerHTML;
+                if(textvlaue.toLowerCase().indexOf(filter) > -1){
+                    tr[i].style.display = "";
+                }else{
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    </script>
+    
+</body>
+</html>
